@@ -1,29 +1,40 @@
 "use client";
-import Tabs from "@/components/tabs";
-import { getTopRatedMovies } from "../services/tmDbService";
 import { useEffect, useState } from "react";
+import Tabs from "@/components/Tabs";
+import { getTopRatedMovies } from "../services/tmDbService";
 import { getTopRatedTV } from "@/services/tTvDbService";
+import Card from "@/components/Card";
 
+type MediaItem = {
+  title: string;
+  image: string;
+  date: string;
+  id: string;
+};
 export default function Home() {
   const [activeTab, setActiveTab] = useState("TV Shows");
-  const [data, setData] = useState<any>();
-
+  const [media, setMedia] = useState<MediaItem[]>([]);
+  const fetchData = async (): Promise<MediaItem[]> => {
+    try {
+      const response =
+        activeTab === "Movies"
+          ? await getTopRatedMovies()
+          : await getTopRatedTV();
+      return response.results.map((item: any) => ({
+        id: item.id,
+        title: item.title || item.name || "Untitled",
+        image: item.backdrop_path || "default-image.jpg",
+        date: item.first_air_date || item.release_date || "Unknown Date",
+      }));
+    } catch (error) {
+      console.error("Error fetching data:", error);
+      return [];
+    }
+  };
   useEffect(() => {
-    const fetchData = async () => {
-      try {
-        if (activeTab === "Movies") {
-          const movies = await getTopRatedMovies();
-          setData(movies.results.slice(0, 10)); // Top 10 items
-        } else {
-          const Tvs = await getTopRatedTV();
-          setData(Tvs.results.slice(0, 10)); // Top 10 items
-        }
-      } catch (error) {
-        console.error("Error fetching data:", error);
-        setData([]);
-      }
-    };
-    fetchData();
+    fetchData().then((data) => {
+      setMedia(data.slice(0, 10));
+    });
   }, [activeTab]);
 
   return (
@@ -32,21 +43,23 @@ export default function Home() {
         tabs={["TV Shows", "Movies"]}
         onChange={(tab) => setActiveTab(tab)}
       />
-      <div>
-        <h1>Top-Rated {activeTab}</h1>
-        <ul>
-          {data?.length > 0 ? (
-            data.map((movie: any) => (
-              <li key={movie.id}>
-                <h3>{movie.title}</h3>
-                <p>Rating: {movie.vote_average}</p>
-              </li>
+      <div className="px-32 pt-6">
+        <h2 className="pb-8 text-xl">Top-Rated {activeTab}</h2>
+        <div className="grid lg:grid-cols-4 2xl:grid-cols-5 gap-8 ">
+          {media?.length > 0 ? (
+            media.map((item: any) => (
+              <Card
+                key={item.id}
+                title={item.title}
+                image={item.image}
+                date={item.date}
+              />
             ))
           ) : (
             <p>Loading...</p>
           )}
-        </ul>
-      </div>{" "}
+        </div>{" "}
+      </div>
     </>
   );
 }
