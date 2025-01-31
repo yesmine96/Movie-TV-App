@@ -14,3 +14,12 @@ export const getTopRatedMovies = async () => {
     throw error;
   }
 };
+export const fetchMovieById = async (movieId: number) => {
+  try {
+    const response = await api.get(`/movie/${movieId}`);
+    return response.data;
+  } catch (error) {
+    console.error("Error fetching movie details:", error);
+    throw error;
+  }
+};

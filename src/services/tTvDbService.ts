@@ -14,3 +14,12 @@ export const getTopRatedTV = async () => {
     throw error;
   }
 };
+export const fetchTvById = async (tvId: number) => {
+  try {
+    const response = await api.get(`/tv/${tvId}`);
+    return response.data;
+  } catch (error) {
+    console.error("Error fetching Tv details:", error);
+    throw error;
+  }
+};
