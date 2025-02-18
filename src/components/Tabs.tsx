@@ -16,16 +16,16 @@ const Tabs: React.FC<TabsProps> = ({ tabs, onChange, defaultActive = 0 }) => {
   };
 
   return (
-    <div className="w-full max-w-md mx-auto">
+    <div className="w-full max-w-xs ">
       {/* Tab List */}
-      <div className="flex border-b border-gray-300">
+      <div className="flex rounded-md border border-gray-300">
         {tabs.map((tab, index) => (
           <button
             key={index}
             onClick={() => handleTabChange(index)}
-            className={`flex-1 py-2 text-center transition-colors duration-300 ${
+            className={`rounded-md flex-1 py-2 text-center transition-colors duration-300 ${
               activeTab === index
-                ? "border-b-2 border-blue-500 text-blue-500"
+                ? "border-2 bg-blue-500 border-blue-500 text-white"
                 : "text-gray-500 hover:text-blue-500"
             }`}
           >
