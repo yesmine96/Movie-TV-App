@@ -1,6 +1,6 @@
 interface MediaType {
   title: string;
-  name?: string;
+  name: string;
   image: string;
   date: string;
   id: number;
