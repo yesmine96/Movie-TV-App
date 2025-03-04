@@ -41,7 +41,10 @@ export default function MoviesPage() {
       <h1 className="py-8 text-3xl font-bold">Top-Rated Movies</h1>
       <div className="grid lg:grid-cols-4 2xl:grid-cols-5 gap-8">
         {media.map((mediaItem) => (
-          <div onClick={() => openModal(mediaItem)} key={mediaItem.id}>
+          <div
+            onClick={() => openModal(mediaItem)}
+            key={mediaItem.id || mediaItem.title}
+          >
             <Card
               title={mediaItem?.title}
               image={mediaItem.backdrop_path}

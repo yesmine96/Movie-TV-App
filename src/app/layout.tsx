@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
-import Tabs from "@/components/Tabs";
+import Tabs from "@/components/Tabs/Tabs";
 import SearchInput from "@/components/SearchInput";
 import { SearchProvider } from "@/context/SearchContext";
 
@@ -31,7 +31,7 @@ export default function RootLayout({
         className={`${geistSans.variable} ${geistMono.variable} antialiased px-32 `}
       >
         <SearchProvider>
-          <SearchInput />
+          <SearchInput placeholder="Search movies or tv shows" />
           <Tabs />
           {children}
         </SearchProvider>
